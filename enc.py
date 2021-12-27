@@ -38,14 +38,17 @@ class Enc(object):
         return out
 
     def enc(self,keyword):
-        keyword = keyword.lower()
         num_array = ""
         for i in range(len(keyword)):
-            tmp_num = (alphabets.find(keyword[i]) + 13) % len(alphabets)
-            tmp_num = str(self.Base_10_to_n(tmp_num))
+            tmp_num = alphabets.find(keyword[i])
+            tmp_num += 13
+            tmp_num = tmp_num % len(alphabets)
+            tmp_num = self.Base_10_to_n(tmp_num)
+            tmp_num = str(tmp_num)
+            tmp_num = tmp_num.zfill(3)
             if len(num_array) != 0:
                 num_array += "-"
-            num_array += tmp_num.zfill(3)
+            num_array += tmp_num
         for i,sym in enumerate(self.enc_set):
             num_array = num_array.replace(str(i),str(sym))
         return num_array
@@ -56,7 +59,10 @@ class Enc(object):
         num_array = ""
         for key in keyword.split("-"):
             tmp_num = int(key)
-            tmp_num = (self.Base_n_to_10(tmp_num) + len(alphabets) -13) % len(alphabets)
+            tmp_num = self.Base_n_to_10(tmp_num)
+            tmp_num -= 13
+            tmp_num += len(alphabets)
+            tmp_num = tmp_num % len(alphabets)
             num_array += alphabets[tmp_num]
         return num_array
     
